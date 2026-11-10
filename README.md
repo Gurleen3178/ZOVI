@@ -52,7 +52,7 @@ ZOVI/
 1. Clone the repository:
 
 ```bash
- https://github.com/Gurleen3178/ZOVI.git
+git clone https://github.com/Gurleen3178/ZOVI.git
 ```
 
 2. Open the project folder:
@@ -86,6 +86,9 @@ ZOVI includes a Free and Premium membership interface. Membership switching is c
 ##  Vision
 
 To make personalized academic assistance more accessible by combining artificial intelligence with a simple, engaging, and student-focused learning environment.
+## Project Status
+
+In Development
 
 ## 👩‍💻 Developer
 
