@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="ZOVI is your personal AI study companion. Organise subjects, understand notes, practise quizzes and learn smarter.">
+
+    <meta name="theme-color" content="#FBF7F3">
+
+    <title>ZOVI | Your AI Study Companion</title>
+
+    <!-- Website styling -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/zovi-theme.css">
+
+    <!-- KaTeX mathematical formula support -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+</head>
+
+<body>
+
+    <!-- ============================= -->
+    <!-- AUTHENTICATION SCREEN         -->
+    <!-- ============================= -->
+
+    <section id="auth-screen" class="auth-screen">
+        <div class="auth-card">
+
+            <div class="auth-brand">
+                <span class="auth-mascot">🐱</span>
+                <h1>ZOVI</h1>
+                <p>Your personal AI study companion</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button type="button" id="show-login" class="active">
+                    Login
+                </button>
+
+                <button type="button" id="show-signup">
+                    Sign Up
+                </button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form">
+                <h2>Welcome back!</h2>
+
+                <label for="login-email">Email</label>
+                <input
+                    type="email"
+                    id="login-email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label for="login-password">Password</label>
+                <input
+                    type="password"
+                    id="login-password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit">Login</button>
+
+                <button type="button" id="forgot-password">
+                    Forgot password?
+                </button>
+            </form>
+
+            <!-- SIGNUP FORM -->
+            <form id="signup-form" hidden>
+                <h2>Create your account</h2>
+
+                <label for="signup-name">Full name</label>
+                <input
+                    type="text"
+                    id="signup-name"
+                    placeholder="Enter your name"
+                    required
+                >
+
+                <label for="signup-email">Email</label>
+                <input
+                    type="email"
+                    id="signup-email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label for="signup-password">Password</label>
+                <input
+                    type="password"
+                    id="signup-password"
+                    placeholder="Create a password"
+                    minlength="8"
+                    required
+                >
+
+                <button type="submit">Create account</button>
+            </form>
+
+            <p id="auth-message" role="status"></p>
+        </div>
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- APPLICATION CONTAINER         -->
+    <!-- ============================= -->
+
+    <div class="app-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon" aria-hidden="true">🐱</div>
+
+                <div>
+                    <h1>ZOVI</h1>
+                    <span>Your study companion</span>
+                </div>
+            </div>
+
+            <!-- MAIN NAVIGATION -->
+            <nav class="main-navigation" aria-label="Main navigation">
+
+                <p class="nav-heading">MENU</p>
+
+                <button class="nav-item active" data-view="dashboard">
+                    <span>⌂</span> Dashboard
+                </button>
+
+                <button class="nav-item" data-view="subjects">
+                    <span>▤</span> My Subjects
+                </button>
+
+                <button class="nav-item" data-view="notes">
+                    <span>▧</span> My Notes
+                </button>
+
+                <p class="nav-heading">STUDY TOOLS</p>
+
+                <button class="nav-item" data-view="ai-assistant">
+                    <span>✧</span> AI Assistant
+                </button>
+
+                <button class="nav-item" data-view="flashcards">
+                    <span>▣</span> Flashcards
+                </button>
+
+                <button class="nav-item" data-view="quizzes">
+                    <span>☷</span> Quizzes & Tests
+                </button>
+
+                <button class="nav-item" data-view="progress">
+                    <span>▥</span> My Progress
+                </button>
+
+                <button class="nav-item" data-view="membership">
+                    <span>♛</span> Membership
+                </button>
+
+            </nav>
+
+            <!-- SIDEBAR BOTTOM -->
+            <div class="sidebar-bottom">
+
+                <button class="nav-item" data-view="settings">
+                    <span>⚙</span> Settings
+                </button>
+
+                <div class="premium-card">
+                    <span>✦ ZOVI Premium</span>
+                    <p>Unlock more ways to learn.</p>
+
+                    <button data-action="premium">
+                        Explore Premium
+                    </button>
+                </div>
+
+                <div class="sidebar-footer">
+                    Made with ♡ by ZOVI
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ============================= -->
+        <!-- MAIN CONTENT                  -->
+        <!-- ============================= -->
+
+        <main class="main-content">
+
+            <!-- TOP BAR -->
+            <header class="topbar">
+
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation"
+                >
+                    ☰
+                </button>
+
+                <div class="breadcrumb" id="breadcrumb">
+                    Dashboard
+                </div>
+
+                <div class="topbar-actions">
+
+                    <label class="search-box">
+                        <span>⌕</span>
+
+                        <input
+                            type="search"
+                            id="globalSearch"
+                            placeholder="Search your study space..."
+                            aria-label="Search"
+                        >
+                    </label>
+
+                    <button
+                        class="notification-button"
+                        aria-label="Notifications"
+                    >
+                        ♡
+                    </button>
+
+                    <button
+                        class="profile-button"
+                        data-view="settings"
+                        aria-label="Open profile"
+                    >
+                        S
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- ============================= -->
+            <!-- DASHBOARD PAGE                -->
+            <!-- ============================= -->
+
+            <section class="page active" id="dashboard">
+
+                <div class="welcome-section">
+
+                    <div>
+                        <p class="eyebrow">YOUR PERSONAL STUDY SPACE</p>
+
+                        <h2>Welcome back! <span>♡</span></h2>
+
+                        <p>
+                            Ready to make today a little more productive?
+                            ZOVI is here to help.
+                        </p>
+                    </div>
+
+                    <div
+                        class="welcome-mascot"
+                        aria-label="ZOVI cat mascot"
+                    >
+                        🐱
+                    </div>
+
+                </div>
+
+
+                <!-- STUDY STATISTICS -->
+                <div class="stats-grid">
+
+                    <article class="stat-card">
+                        <span>My Subjects</span>
+                        <strong id="totalSubjects">0</strong>
+                        <small>Subjects created</small>
+                    </article>
+
+                    <article class="stat-card">
+                        <span>Study Notes</span>
+                        <strong id="totalNotes">0</strong>
+                        <small>Notes saved</small>
+                    </article>
+
+                    <article class="stat-card">
+                        <span>Flashcards</span>
+                        <strong id="totalFlashcards">0</strong>
+                        <small>Cards created</small>
+                    </article>
+
+                    <article class="stat-card">
+                        <span>Quizzes Taken</span>
+                        <strong id="totalQuizzes">0</strong>
+                        <small>Practice sessions</small>
+                    </article>
+
+                </div>
+
+
+                <!-- SUBJECTS -->
+                <section class="content-section">
+
+                    <div class="section-header">
+
+                        <div>
+                            <h3>My Subjects</h3>
+                            <p>Your subjects, organised in one place.</p>
+                        </div>
+
+                        <button
+                            class="primary-button"
+                            data-action="create-subject"
+                        >
+                            + Add Subject
+                        </button>
+
+                    </div>
+
+                    <div class="subjects-grid" id="dashboardSubjects">
+
+                        <div class="empty-state">
+                            <div>📚</div>
+
+                            <h4>Your study space starts here</h4>
+
+                            <p>Create your first subject to get started.</p>
+
+                            <button
+                                class="primary-button"
+                                data-action="create-subject"
+                            >
+                                Create a Subject
+                            </button>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- RECENT ACTIVITY -->
+                <section class="content-section">
+
+                    <div class="section-header">
+                        <div>
+                            <h3>Recent Activity</h3>
+                            <p>Continue where you left off.</p>
+                        </div>
+                    </div>
+
+                    <div id="recentActivity" class="activity-list">
+                        <p class="empty-message">
+                            Your recent study activity will appear here.
+                        </p>
+                    </div>
+
+                </section>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- SUBJECTS PAGE                 -->
+            <!-- ============================= -->
+
+            <section class="page" id="subjects">
+
+                <div class="page-heading">
+                    <p class="eyebrow">YOUR LEARNING LIBRARY</p>
+
+                    <h2>My Subjects</h2>
+
+                    <p>
+                        Give every subject its own organised workspace.
+                    </p>
+
+                    <button
+                        class="primary-button"
+                        data-action="create-subject"
+                    >
+                        + Create Subject
+                    </button>
+                </div>
+
+                <div class="subjects-grid" id="allSubjects">
+                </div>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- MEMBERSHIP PAGE               -->
+            <!-- ============================= -->
+
+            <section class="page" id="membership">
+
+                <div class="page-heading">
+                    <p class="eyebrow">YOUR LEARNING EXPERIENCE</p>
+
+                    <h2>Choose how you learn</h2>
+
+                    <p>
+                        Find the plan that suits your learning journey.
+                    </p>
+                </div>
+
+                <div class="membership-status">
+                    <h3>Your current plan</h3>
+
+                    <p id="membership-current-plan">
+                        Free Plan
+                    </p>
+
+                    <p id="membership-current-description">
+                        You are currently using the ZOVI Free plan.
+                    </p>
+                </div>
+
+                <div class="membership-plans">
+
+                    <!-- FREE PLAN -->
+                    <article class="membership-card free-plan">
+
+                        <div class="membership-card-heading">
+                            <span class="membership-label">START LEARNING</span>
+                            <h3>Free</h3>
+                            <p class="membership-price">
+                                ₹0 <span>/ month</span>
+                            </p>
+                        </div>
+
+                        <p>
+                            Everything you need to begin organising
+                            your studies.
+                        </p>
+
+                        <ul>
+                            <li>Subject workspaces</li>
+                            <li>Basic AI tutor access</li>
+                            <li>Study material uploads</li>
+                            <li>Notes organisation</li>
+                            <li>Limited flashcards and quizzes</li>
+                            <li>Basic progress tracking</li>
+                        </ul>
+
+                        <button
+                            type="button"
+                            class="membership-select-button"
+                            disabled
+                        >
+                            Free Plan
+                        </button>
+
+                    </article>
+
+
+                    <!-- PREMIUM PLAN -->
+                    <article class="membership-card premium-plan">
+
+                        <div class="membership-card-heading">
+                            <span class="membership-label">
+                                ✦ UNLOCK MORE
+                            </span>
+
+                            <h3>ZOVI Premium</h3>
+
+                            <p class="membership-price">
+                                ₹199 <span>/ month</span>
+                            </p>
+                        </div>
+
+                        <p>
+                            More room to learn, practise and grow.
+                        </p>
+
+                        <ul>
+                            <li>Everything in Free</li>
+                            <li>Higher AI tutor usage</li>
+                            <li>More material storage</li>
+                            <li>More flashcards and quizzes</li>
+                            <li>Advanced revision and progress</li>
+                            <li>Voice tutor access</li>
+                            <li>Future premium learning features</li>
+                        </ul>
+
+                        <button
+                            type="button"
+                            id="demo-premium-button"
+                            class="primary-button"
+                        >
+                            Try Premium Demo
+                        </button>
+
+                        <small>
+                            Demo only. No payment will be collected.
+                        </small>
+
+                    </article>
+
+                </div>
+
+                <p class="membership-note">
+                    ZOVI Premium is currently a demonstration feature.
+                    Selecting the demo plan does not create a real payment
+                    or subscription.
+                </p>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- SUBJECT WORKSPACE             -->
+            <!-- ============================= -->
+
+            <section class="page" id="subject-workspace">
+
+                <div class="subject-header">
+
+                    <button
+                        class="back-button"
+                        data-action="back-to-subjects"
+                    >
+                        ← All Subjects
+                    </button>
+
+                    <div>
+                        <h2 id="workspaceSubjectName">Subject Name</h2>
+
+                        <p id="workspaceSubjectDescription">
+                            Your personal subject workspace.
+                        </p>
+
+                        <button
+                            type="button"
+                            id="deleteSubjectButton"
+                            class="delete-subject-button"
+                        >
+                            Delete Subject
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <!-- SUBJECT-SPECIFIC NAVIGATION -->
+                <nav
+                    class="workspace-tabs"
+                    aria-label="Subject workspace navigation"
+                >
+
+                    <button
+                        class="workspace-tab active"
+                        data-workspace-tab="materials"
+                    >
+                        Materials
+                    </button>
+
+                    <button
+                        class="workspace-tab"
+                        data-workspace-tab="ai"
+                    >
+                        Ask ZOVI
+                    </button>
+
+                    <button
+                        class="workspace-tab"
+                        data-workspace-tab="flashcards"
+                    >
+                        Flashcards
+                    </button>
+
+                    <button
+                        class="workspace-tab"
+                        data-workspace-tab="quizzes"
+                    >
+                        Quizzes
+                    </button>
+
+                    <button
+                        class="workspace-tab"
+                        data-workspace-tab="progress"
+                    >
+                        Progress
+                    </button>
+
+                </nav>
+
+
+                <!-- SUBJECT MATERIALS -->
+                <div
+                    class="workspace-panel active"
+                    id="workspace-materials"
+                >
+
+                    <div class="section-header">
+                        <div>
+                            <h3>Study Materials</h3>
+                            <p>Everything for this subject in one place.</p>
+                        </div>
+
+                        <button
+                            class="primary-button"
+                            data-action="upload-material"
+                        >
+                            + Upload Material
+                        </button>
+                    </div>
+
+                    <div id="subjectMaterials">
+                        <p class="empty-message">
+                            No materials added yet.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- SUBJECT AI ASSISTANT -->
+                <div class="workspace-panel" id="workspace-ai">
+
+                    <h3>Ask ZOVI</h3>
+
+                    <p>
+                        Ask questions about this subject and your uploaded
+                        study materials.
+                    </p>
+
+                    <div class="subject-chat-layout">
+
+                        <aside class="chat-history-sidebar">
+
+                            <div class="chat-history-heading">
+                                <h4>Your conversations</h4>
+
+                                <button
+                                    type="button"
+                                    id="newSubjectChat"
+                                    class="new-chat-button"
+                                >
+                                    + New Chat
+                                </button>
+                            </div>
+
+                            <div
+                                id="chatHistoryList"
+                                class="chat-history-list"
+                            >
+                                <p class="chat-history-empty">
+                                    Your conversations will appear here.
+                                </p>
+                            </div>
+
+                        </aside>
+
+                        <div class="subject-chat-main">
+
+                            <div class="chat-container">
+
+                                <div
+                                    class="chat-messages"
+                                    id="chatMessages"
+                                >
+                                    <div class="assistant-message">
+                                        Hi! I'm ZOVI. What would you like
+                                        to understand today?
+                                    </div>
+                                </div>
+
+                                <form id="chatForm" class="chat-form">
+
+                                    <input
+                                        type="file"
+                                        id="chatFileInput"
+                                        accept=".pdf,.txt,application/pdf,text/plain"
+                                        multiple
+                                        hidden
+                                    >
+
+                                    <button
+                                        type="button"
+                                        class="chat-attach-button"
+                                        data-attach-input="chatFileInput"
+                                        aria-label="Attach files"
+                                        title="Attach files"
+                                    >
+                                        ＋
+                                    </button>
+
+                                    <input
+                                        type="text"
+                                        id="chatInput"
+                                        placeholder="Ask a question..."
+                                        autocomplete="off"
+                                    >
+
+                                    <button
+                                        type="button"
+                                        id="voiceModeButton"
+                                        class="voice-mode-button"
+                                        title="Start voice conversation"
+                                    >
+                                        <span>🎙️</span>
+                                    </button>
+
+                                    <button type="submit">Send</button>
+
+                                </form>
+
+                                <div
+                                    id="chatAttachmentPreview"
+                                    class="chat-attachment-preview"
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUBJECT FLASHCARDS -->
+                <div
+                    class="workspace-panel"
+                    id="workspace-flashcards"
+                >
+
+                    <h3>Subject Flashcards</h3>
+
+                    <p>
+                        Create and practise flashcards for this subject.
+                    </p>
+
+                    <div id="subjectFlashcards"></div>
+
+                    <button
+                        class="primary-button"
+                        data-action="generate-flashcards"
+                    >
+                        Generate Flashcards
+                    </button>
+
+                </div>
+
+
+                <!-- SUBJECT QUIZZES -->
+                <div
+                    class="workspace-panel"
+                    id="workspace-quizzes"
+                >
+
+                    <h3>Subject Quizzes</h3>
+
+                    <p>
+                        Test your understanding and practise weak topics.
+                    </p>
+
+                    <div id="subjectQuizzes"></div>
+
+                    <button
+                        class="primary-button"
+                        data-action="generate-quiz"
+                    >
+                        Create a Quiz
+                    </button>
+
+                </div>
+
+
+                <!-- SUBJECT PROGRESS -->
+                <div
+                    class="workspace-panel"
+                    id="workspace-progress"
+                >
+
+                    <h3>Subject Progress</h3>
+
+                    <p>
+                        Track your learning and revision for this subject.
+                    </p>
+
+                    <div id="subjectProgress"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- NOTES PAGE                    -->
+            <!-- ============================= -->
+
+            <section class="page" id="notes">
+
+                <div class="page-heading">
+                    <p class="eyebrow">YOUR STUDY MATERIAL</p>
+
+                    <h2>My Notes</h2>
+
+                    <p>
+                        Access your saved notes and study summaries.
+                    </p>
+                </div>
+
+                <div id="allNotes" class="notes-grid">
+                    <p class="empty-message">
+                        Your saved notes will appear here.
+                    </p>
+                </div>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- AI ASSISTANT PAGE             -->
+            <!-- ============================= -->
+
+            <section class="page" id="ai-assistant">
+
+                <div class="page-heading">
+                    <p class="eyebrow">YOUR AI STUDY PARTNER</p>
+
+                    <h2>Ask ZOVI</h2>
+
+                    <p>
+                        Get explanations, examples and help with your studies.
+                    </p>
+                </div>
+
+                <div class="assistant-workspace">
+
+                    <div
+                        id="globalChatMessages"
+                        class="chat-messages"
+                    >
+                        <div class="assistant-message">
+                            Hello! What are we learning today?
+                        </div>
+                    </div>
+
+                    <form id="globalChatForm" class="chat-form">
+
+                        <input
+                            type="file"
+                            id="globalChatFileInput"
+                            accept=".pdf,.txt,application/pdf,text/plain"
+                            multiple
+                            hidden
+                        >
+
+                        <button
+                            type="button"
+                            class="chat-attach-button"
+                            data-attach-input="globalChatFileInput"
+                            aria-label="Attach files"
+                            title="Attach files"
+                        >
+                            ＋
+                        </button>
+
+                        <input
+                            type="text"
+                            id="globalChatInput"
+                            placeholder="Ask ZOVI anything..."
+                            autocomplete="off"
+                        >
+
+                        <button type="submit">Send</button>
+
+                    </form>
+
+                    <div
+                        id="globalChatAttachmentPreview"
+                        class="chat-attachment-preview"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- FLASHCARDS PAGE               -->
+            <!-- ============================= -->
+
+            <section class="page" id="flashcards">
+
+                <div class="page-heading">
+                    <p class="eyebrow">LEARN & REMEMBER</p>
+
+                    <h2>Flashcards</h2>
+
+                    <p>
+                        Practise concepts and strengthen your memory.
+                    </p>
+                </div>
+
+                <div id="allFlashcards"></div>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- QUIZZES PAGE                  -->
+            <!-- ============================= -->
+
+            <section class="page" id="quizzes">
+
+                <div class="page-heading">
+                    <p class="eyebrow">TEST YOUR KNOWLEDGE</p>
+
+                    <h2>Quizzes & Practice Tests</h2>
+
+                    <p>
+                        Challenge yourself and discover what to revise.
+                    </p>
+                </div>
+
+                <div id="allQuizzes"></div>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- PROGRESS PAGE                 -->
+            <!-- ============================= -->
+
+            <section class="page" id="progress">
+
+                <div class="page-heading">
+                    <p class="eyebrow">YOUR LEARNING JOURNEY</p>
+
+                    <h2>My Progress</h2>
+
+                    <p>
+                        See how far you've come with your studies.
+                    </p>
+                </div>
+
+                <div id="overallProgress"></div>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- SETTINGS PAGE                 -->
+            <!-- ============================= -->
+
+            <section class="page" id="settings">
+
+                <div class="page-heading">
+                    <p class="eyebrow">PERSONALISE YOUR EXPERIENCE</p>
+
+                    <h2>Settings</h2>
+
+                    <p>
+                        Manage your ZOVI account and preferences.
+                    </p>
+                </div>
+
+                <div
+                    class="settings-content"
+                    id="settingsContent"
+                ></div>
+
+            </section>
+
+
+            <!-- FOOTER -->
+            <footer class="main-footer">
+                <p>Made with ♡ by ZOVI</p>
+                <p>Your learning journey, made simpler.</p>
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- CREATE SUBJECT MODAL          -->
+    <!-- ============================= -->
+
+    <dialog id="subjectModal" class="modal">
+
+        <form id="subjectForm">
+
+            <div class="modal-header">
+                <h2>Create a Subject</h2>
+
+                <button
+                    type="button"
+                    class="close-modal"
+                    data-action="close-subject-modal"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+            </div>
+
+            <label for="subjectName">Subject Name</label>
+
+            <input
+                type="text"
+                id="subjectName"
+                placeholder="e.g. Data Structures"
+                maxlength="100"
+                required
+            >
+
+            <label for="subjectDescription">Description</label>
+
+            <textarea
+                id="subjectDescription"
+                placeholder="What are you studying in this subject?"
+                rows="3"
+            ></textarea>
+
+            <button type="submit" class="primary-button">
+                Create Subject
+            </button>
+
+        </form>
+
+    </dialog>
+
+
+    <!-- ============================= -->
+    <!-- UPLOAD MATERIAL MODAL         -->
+    <!-- ============================= -->
+
+    <dialog id="uploadModal" class="modal">
+
+        <form id="uploadForm">
+
+            <div class="modal-header">
+                <h2>Upload Study Material</h2>
+
+                <button
+                    type="button"
+                    class="close-modal"
+                    data-action="close-upload-modal"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+            </div>
+
+            <p>
+                Keep your notes and documents organised in one place.
+            </p>
+
+            <label for="materialFile">Choose a file</label>
+
+            <div class="materials-upload-area">
+
+                <span class="materials-upload-icon">↑</span>
+
+                <strong>Select your study file</strong>
+
+                <p>PDF, PPT, PPTX, DOC, DOCX or TXT</p>
+
+                <small>Maximum file size: 50 MB</small>
+
+                <input
+                    type="file"
+                    id="materialFile"
+                    accept=".pdf,.ppt,.pptx,.doc,.docx,.txt"
+                    required
+                >
+
+            </div>
+
+            <div
+                id="materialUploadProgress"
+                class="material-upload-progress"
+                hidden
+            >
+
+                <span class="materials-spinner"></span>
+
+                <p
+                    id="materialUploadProgressText"
+                    role="status"
+                >
+                    Preparing your file...
+                </p>
+
+            </div>
+
+            <button type="submit" class="primary-button">
+                Upload Material
+            </button>
+
+        </form>
+
+    </dialog>
+
+
+    <!-- NOTIFICATION / TOAST -->
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+
+    <!-- ============================= -->
+    <!-- KATEX MATHEMATICAL SUPPORT     -->
+    <!-- ============================= -->
+
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"
+    ></script>
+
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+    ></script>
+
+
+    <!-- ============================= -->
+    <!-- FRONTEND JAVASCRIPT            -->
+    <!-- ============================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js" defer></script>
+
+    <script src="js/supabase.js" defer></script>
+
+    <script src="js/auth.js" defer></script>
+
+    <script src="js/app.js" defer></script>
+
+    <script src="js/membership.js" defer></script>
+
+
+    <!-- ============================= -->
+    <!-- VOICE MODE OVERLAY             -->
+    <!-- ============================= -->
+
+    <div
+        id="voiceModeOverlay"
+        class="voice-mode-overlay"
+        hidden
+    >
+
+        <div class="voice-mode-card">
+
+            <button
+                type="button"
+                id="closeVoiceMode"
+                class="voice-close-button"
+            >
+                ✕
+            </button>
+
+            <div class="voice-cat">🐱</div>
+
+            <h2>Talk to ZOVI</h2>
+
+            <p id="voiceStatus">
+                Ready when you are...
+            </p>
+
+            <div
+                id="voiceResponse"
+                class="voice-response"
+                aria-live="polite"
+            >
+                ZOVI's replies will appear here.
+            </div>
+
+            <div
+                class="voice-animation"
+                id="voiceAnimation"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <button
+                type="button"
+                id="voiceStartButton"
+                class="voice-start-button"
+            >
+                🎙️ Start talking
+            </button>
+
+            <button
+                type="button"
+                id="voiceStopButton"
+                class="voice-stop-button"
+                hidden
+            >
+                End conversation
+            </button>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
